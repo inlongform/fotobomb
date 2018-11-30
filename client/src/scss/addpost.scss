@@ -1,0 +1,58 @@
+#addpost {
+  position: fixed;
+  width: 25%;
+  background: $c-bg-color;
+  right: 0;
+  top: 66px;
+  z-index: 100;
+  transition: 0.3s;
+  @include addpostShadow;
+
+  &.closed {
+    right: -30%;
+  }
+  @media (max-width: 992px) {
+    width: 35%;
+    &.closed {
+      right: -35%;
+    }
+  }
+  @media (max-width: 768px) {
+    width: 50%;
+    &.closed {
+      right: -50%;
+    }
+  }
+  @media (max-width: 576px) {
+    width: 100%;
+    &.closed {
+      right: -100%;
+    }
+  }
+  .post-inner {
+    padding: 0.75rem 1.25rem;
+    img {
+      width: 100%;
+    }
+    .add-header {
+      h5 {
+        color: $c-blue;
+        line-height: 24px;
+      }
+
+      .fa-cog,
+      .close {
+        color: $c-blue;
+      }
+
+      display: flex;
+      padding-top: 20px;
+      justify-content: space-between;
+    }
+
+    .add-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}

@@ -1,0 +1,88 @@
+.card {
+  width: 60%;
+  margin: 0 auto;
+  @include shadow;
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: inline-flex;
+    align-items: baseline;
+    margin-left: 10px;
+    li {
+      margin-right: 10px;
+    }
+  }
+  .card-header {
+    display: flex;
+    align-items: baseline;
+    div {
+      &.user-info {
+        width: 80%;
+        ul h6.heavy-open {
+          color: $c-blue;
+        }
+      }
+      &.social {
+        width: 20%;
+        display: flex;
+        justify-content: flex-end;
+        ul {
+          border-left: 1px solid $c-outline;
+          padding-left: 20px;
+        }
+      }
+    }
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  .card-body {
+    img {
+      width: 100%;
+    }
+  }
+  .card-footer,
+  .card-header {
+    border: 0;
+  }
+  .card-footer a {
+    color: $c-red;
+    text-decoration: underline;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .card .card-header {
+    div.user-info {
+      .dtime {
+        li {
+          .fa-calendar-alt {
+            margin-left: 5px;
+          }
+          margin-top: 10px;
+        }
+      }
+    }
+    div.social {
+      ul {
+        border: none;
+      }
+    }
+
+    div.user-info,
+    div.social {
+      width: 100%;
+    }
+  }
+}

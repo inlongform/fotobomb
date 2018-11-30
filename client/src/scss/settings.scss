@@ -1,0 +1,33 @@
+.card {
+  @include shadow;
+  margin-bottom: 15px;
+  .card-header {
+    display: flex;
+    border-bottom: none;
+
+    h5 {
+      color: $c-blue;
+      line-height: 24px;
+    }
+
+    .fa-cog {
+      color: $c-blue;
+    }
+  }
+}
+
+#myposts {
+  thead td {
+    font-weight: 500;
+    border: 0;
+  }
+  tbody td {
+    vertical-align: middle;
+  }
+  .fa-trash-alt {
+    color: $c-red;
+  }
+  img {
+    width: 150px;
+  }
+}

@@ -1,0 +1,60 @@
+#main {
+  overflow-x: hidden;
+}
+
+.react-datepicker {
+  font-family: $poppins !important;
+}
+.react-datepicker__day--selected {
+  background-color: $c-green !important;
+}
+.react-datepicker__day--selected:hover {
+  background-color: $c-yellow !important;
+}
+
+.sep {
+  width: 100%;
+  height: 1px;
+  border-top: 1px solid $c-outline;
+  margin: 0.5rem 0;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: $c-yellow;
+}
+
+.heavy {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.btn-link {
+  color: $c-red;
+  float: right;
+  &:hover {
+    color: $c-red;
+    text-decoration: underline;
+  }
+}
+
+@import "addpost";
+@import "modal";
+#settings {
+  margin-top: 50px;
+  @import "settings";
+}
+
+#full {
+  margin-top: 50px;
+  @import "full";
+}
+
+#results {
+  margin-top: 50px;
+  .row {
+    @import "card";
+  }
+}
+@import "navbar";
+@import "icons";

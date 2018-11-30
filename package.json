@@ -1,0 +1,44 @@
+{
+  "name": "fotobomb",
+  "version": "1.0.0",
+  "description": "share group photos with strangers",
+  "main": "server.js",
+  "scripts": {
+    "client-install": "npm install --prefix client",
+    "start": "node server.js",
+    "server2": "nodemon server.js",
+    "server": "nodemon --exec babel-node server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server2\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+  },
+  "author": "Robert Williams",
+  "license": "MIT",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "busboy": "^0.2.14",
+    "concurrently": "^3.5.1",
+    "cors": "^2.8.4",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.3",
+    "express-fileupload": "^1.0.0-alpha.1",
+    "faker": "^4.1.0",
+    "helmet": "^3.13.0",
+    "jimp": "^0.5.4",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.3.7",
+    "nodemailer": "^4.6.8",
+    "passport": "^0.4.0",
+    "passport-google-plus-token": "^2.1.0",
+    "passport-jwt": "^4.0.0",
+    "shortid": "^2.2.13",
+    "uuid": "^3.3.2",
+    "validator": "^10.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  }
+}
