@@ -151,10 +151,11 @@ router.get("/tag/:tag", (req, res) => {
 router.get("/details/query", (req, res) => {
   const { start, end, tags } = req.query;
   let error = { success: false };
+  console.log(start, end, tags);
   Post.find(queryBuilder(start, end, tags))
     .then(posts => {
+      console.log(posts);
       res.json(posts);
-      console.log(posts.data);
     })
     .catch(err => {
       error.message = "Error Retrieving Posts";
