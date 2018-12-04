@@ -13,6 +13,10 @@ $c-yellow: #f6bd60;
 $c-pink: #f5cac3;
 $c-red: #f28481;
 
+#firebaseui_container {
+  width: 236px;
+}
+
 @mixin shadow {
   -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.2);

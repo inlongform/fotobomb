@@ -1,4 +1,4 @@
-import { GET_ERRORS, GET_USERS } from "./types";
+import { GET_ERRORS, GET_USERS, SHOW_UPLOAD_PANEL } from "./types";
 import axios from "axios";
 
 export const getUsers = () => dispatch => {
@@ -17,4 +17,12 @@ export const getUsers = () => dispatch => {
         payload: err.response.data
       })
     );
+};
+
+export const toggleUploadPanel = bool => dispatch => {
+  console.log("hello");
+  dispatch({
+    type: SHOW_UPLOAD_PANEL,
+    payload: bool
+  });
 };

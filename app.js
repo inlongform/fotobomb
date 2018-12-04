@@ -12,6 +12,8 @@ const admin = require("./routes/api/v1/admin");
 const flag = require("./routes/api/v1/flag");
 const keys = require("./config/keys");
 
+const urlGoogle = require("./utils/faker");
+
 // const fakePostData = require("./utils/faker");
 
 const app = express();

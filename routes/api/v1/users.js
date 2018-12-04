@@ -11,16 +11,10 @@ require(path.join(HOMEDIR, "config", "passport"));
 const User = require(path.join(HOMEDIR, "models", "User"));
 const { updateUser } = require(path.join(HOMEDIR, "utils", "queryBuilder"));
 
-router.post(
+router.get(
   "/auth/google",
-  passport.authenticate("googleToken", { session: false }),
-  tokenUtil.googleAuth
-);
-
-router.post(
-  "/update/profile/:id",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {}
+  tokenUtil.jwtAuth
 );
 
 router.post(

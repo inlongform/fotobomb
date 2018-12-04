@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
-import jwt_decode from "jwt-decode";
+import jwt from "jwt-simple";
 import { Container } from "reactstrap";
 
 import PrivateRoute from "./components/common/PrivateRoute";
@@ -24,6 +24,8 @@ import RedirectId from "./components/redirect/RedirectId";
 import Notifications from "./components/common/Notifications";
 import PopOver from "./components/common/PopOver";
 
+import { JWT_KEY } from "./utils/constants";
+
 // import { clearCurrentProfile } from "./actions/profileActions";
 
 import {
@@ -34,36 +36,38 @@ import {
   faTrashAlt,
   faSearch,
   faUserCircle,
-  faTimes
+  faTimes,
+  faSignOutAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 
 // Check for token
-if (localStorage.jwtToken) {
-  // Set auth token header auth
-  setAuthToken(localStorage.jwtToken);
-  // Decode token and get user info and exp
-  const decoded = jwt_decode(localStorage.jwtToken);
-  // Set user and isAuthenticated
-  store.dispatch(setCurrentUser(decoded));
+// if (localStorage.jwtToken) {
+//   // Set auth token header auth
+//   setAuthToken(localStorage.jwtToken);
+//   // Decode token and get user info and exp
+//   const decoded = jwt.decode(localStorage.jwtToken, JWT_KEY);
+//   // Set user and isAuthenticated
+//   store.dispatch(setCurrentUser(decoded));
 
-  // Check for expired token
-  const currentTime = Date.now() / 1000;
-  if (decoded.exp < currentTime) {
-    // Logout user
-    console.log("logout app");
-    store.dispatch(logoutUser());
+//   // Check for expired token
+//   const currentTime = Date.now() / 1000;
+//   if (decoded.exp < currentTime) {
+//     // Logout user
+//     console.log("logout app");
+//     store.dispatch(logoutUser());
 
-    // Redirect to login
-    window.location.href = "/";
-    alert("please log in");
-  }
-}
+//     // Redirect to login
+//     window.location.href = "/";
+//     alert("please log in");
+//   }
+// }
 
 class App extends Component {
   constructor(props) {
     super(props);
+
     library.add(
       fab,
       faCalendarAlt,
@@ -73,7 +77,8 @@ class App extends Component {
       faTrashAlt,
       faSearch,
       faUserCircle,
-      faTimes
+      faTimes,
+      faSignOutAlt
     );
   }
 
@@ -90,6 +95,7 @@ class App extends Component {
             <PopOver showModal={false} />
             {/* <Branding /> */}
             <TopNav />
+            <AddPost />
             <Container fluid={true} id="main">
               <Switch>
                 {/* <Route exact path="/r/:id" component={RedirectId} />

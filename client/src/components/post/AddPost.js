@@ -1,147 +1,97 @@
-import React, { Component } from "react";
-import { Container, Row, Col, Button } from "reactstrap";
+import React, { Component, Fragment } from "react";
+import { Input, Button, FormGroup, Label } from "reactstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CAPTION_LENGTH } from "../../utils/constants";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 
 import { addPost } from "../../actions/postActions";
-import TagInput from "./TagInput";
-import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
-import FileUpload from "./FileUpload";
-// import AutoComplete from "./AutoComplete";
-
-import { CAPTION_LENGTH } from "../../utils/constants";
+import { toggleUploadPanel } from "../../actions/userActions";
 
 class AddPost extends Component {
   constructor(props) {
     super(props);
+    // this.state = {
+    //   isOpen: false
+    // };
 
-    this.state = {
-      caption: "",
-      file: {},
-      location: "",
-      tags: [],
-      errors: {}
-    };
-
-    this.onChange = this.onChange.bind(this);
-    // this.onPlaceSelected = this.onPlaceSelected.bind(this);
-    this.onUpdateFile = this.onUpdateFile.bind(this);
-    this.onSubmitPost = this.onSubmitPost.bind(this);
+    // this.togglePanel = this.togglePanel.bind(this);
   }
 
-  // componentWillReceiveProps(newProps) {
-  //   if (newProps.errors) {
-  //     this.setState({ errors: newProps.errors });
-  //   }
-  // }
-
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
-
-  onTagChange(val) {
-    this.setState({
-      tags: val.map(nVal => {
-        return String(nVal).replace(/\s+/g, "");
-      })
-    });
-  }
-
-  // onPlaceSelected(e) {
+  // togglePanel() {
+  //   let currentState = !this.state.isOpen;
   //   this.setState({
-  //     location: e.formatted_address
+  //     isOpen: currentState
   //   });
   // }
 
-  onUpdateFile(file) {
-    this.setState({
-      file: file
-    });
-  }
-
-  onSubmitPost(e) {
-    e.preventDefault();
-    if (!this.state.file["name"]) {
-      alert("you forgot the image!");
-      return;
-    }
-
-    if (this.state.tags < 1) {
-      alert("There must be at least 1 tag associated with this post!");
-      return;
-    }
-
-    if (this.state.caption > CAPTION_LENGTH) {
-      alert(`your caption needs to be less than ${CAPTION_LENGTH} characters`);
-      return;
-    }
-
-    let formData = new FormData();
-
-    const { user } = this.props.auth;
-
-    formData.append("file", this.state.file);
-    formData.append("tags", this.state.tags);
-    formData.append("id", user.id);
-    if (this.state.caption) formData.append("caption", this.state.caption);
-    // if (this.state.location) formData.append("location", this.state.location);
-
-    this.props.addPost(formData, this.props.history);
-  }
-
   render() {
-    const { errors } = this.state;
+    const { auth, users } = this.props;
 
-    if (errors.hasOwnProperty("message")) {
-      alert(errors.message);
-    }
     return (
-      <Container style={{ marginTop: "40px" }} id="add-photo">
-        <Row>
-          <Col>
-            <form>
-              <Row>
-                <FileUpload updateFile={this.onUpdateFile} />
-              </Row>
-              <Row>
-                <h5 className="upload-headers">Add Tags</h5>
-                <TagInput
-                  onTagChange={this.onTagChange.bind(this)}
-                  name="tags"
-                />
-              </Row>
-              {/* <Row>
-                <h5>Location (optional)</h5>
-                <AutoComplete />
-              </Row> */}
-              <Row>
-                <h5 className="upload-headers">Add Caption (Optional)</h5>
-
-                <TextAreaFieldGroup
-                  name="caption"
-                  value={this.state.caption}
-                  onChange={this.onChange}
-                />
-
-                <Button
-                  color="primary"
-                  size="sm"
-                  value="submit"
-                  onClick={this.onSubmitPost}
-                >
-                  Submit
-                </Button>
-              </Row>
-            </form>
-          </Col>
-          <Col>
-            <Row />
-            <Row />
-            <Row />
-          </Col>
-          <Col />
-        </Row>
-      </Container>
+      <Fragment>
+        {auth.isAuthenticated ? (
+          <div
+            id="addpost"
+            className={!users.showUploadPanel ? "closed" : null}
+          >
+            <div>
+              <div className="post-inner">
+                <div className="add-header">
+                  <h5 className="heavy">Add Post</h5>
+                  <div>
+                    <a href="#" className="ml-2">
+                      <FontAwesomeIcon icon="cog" className="mr-2" />
+                    </a>
+                    <FontAwesomeIcon icon="sign-out-alt" className="mr-2" />
+                    <button
+                      type="button"
+                      className="close"
+                      aria-label="Close"
+                      // onClick={this.togglePanel}
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+                <div className="sep" />
+                <Label className="heavy mt-3">Upload</Label>
+                <FormGroup className="mb-4">
+                  <Input
+                    type="file"
+                    className="custom-file-input"
+                    id="chooseFile"
+                    name="chooseFile"
+                    aria-describedby="inputGroupFileAddon"
+                  />
+                  {/* <Input /> */}
+                  <Label className="custom-file-label" for="chooseFile">
+                    filename.jpg
+                  </Label>
+                </FormGroup>
+                <FormGroup className="mb-4">
+                  <img src="/images/thumb.jpg" />
+                </FormGroup>
+                <FormGroup className="mb-4">
+                  <Label className="heavy">
+                    Tags <small>(1 tag required)</small>
+                  </Label>
+                  <Input />
+                </FormGroup>
+                <FormGroup className="mt-3">
+                  <Label className="heavy">
+                    Caption <small>(optional)</small>
+                  </Label>
+                  <Input type="textarea" />
+                </FormGroup>
+                <FormGroup className="mt-3 add-footer">
+                  <Button color="link">Submit</Button>
+                </FormGroup>
+              </div>
+            </div>
+          </div>
+        ) : null}
+      </Fragment>
     );
   }
 }
@@ -149,16 +99,18 @@ class AddPost extends Component {
 AddPost.propTypes = {
   addPost: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
+  showUploadPanel: PropTypes.bool,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  users: state.users,
   errors: state.errors
   // posts: state.post
 });
 
 export default connect(
   mapStateToProps,
-  { addPost }
+  { addPost, toggleUploadPanel }
 )(AddPost);

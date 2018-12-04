@@ -1,7 +1,8 @@
-import { GET_USERS } from "../actions/types";
+import { GET_USERS, SHOW_UPLOAD_PANEL } from "../actions/types";
 
 const initialState = {
-  users: {}
+  users: {},
+  showUploadPanel: false
 };
 
 export default function(state = initialState, action) {
@@ -11,6 +12,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         users: action.payload
+      };
+    }
+    case SHOW_UPLOAD_PANEL: {
+      return {
+        ...state,
+        showUploadPanel: action.payload
       };
     }
     default:

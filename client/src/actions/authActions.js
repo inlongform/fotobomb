@@ -2,14 +2,18 @@ import axios from "axios";
 
 import { GET_ERRORS, SET_CURRENT_USER } from "./types";
 import setAuthToken from "../utils/setAuthToken";
-import jwt_decode from "jwt-decode";
+
+import jwt from "jwt-simple";
+import { JWT_KEY } from "../utils/constants";
 
 // Login - Get User Token
-export const loginUser = token => dispatch => {
+
+export const loginUser = user => dispatch => {
+  const encoded = jwt.encode(user, JWT_KEY);
+  setAuthToken(encoded);
+  // console.log(encoded);
   axios
-    .post("/api/users/auth/google", {
-      access_token: token
-    })
+    .get("/api/users/auth/google")
     .then(res => {
       console.log(res);
 
@@ -20,7 +24,7 @@ export const loginUser = token => dispatch => {
       // Set token to Auth header
       setAuthToken(token);
       // Decode token to get user data
-      const decoded = jwt_decode(token);
+      const decoded = jwt.decode(token, JWT_KEY);
 
       dispatch(setCurrentUser(decoded));
     })

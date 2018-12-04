@@ -9,3 +9,4 @@ export const GET_POST_BY_ID = "GET_POST_BY_ID";
 export const DELETE_POST = "DELETE_POST";
 export const LOG_OUT = "LOG_OUT";
 export const UPDATE_USER = "UPDATE_USER";
+export const SHOW_UPLOAD_PANEL = "SHOW_UPLOAD_PANEL";

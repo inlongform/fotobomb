@@ -1,38 +1,34 @@
 const passport = require("passport");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
-const GooglePlusTokenStrategy = require("passport-google-plus-token");
+
 const User = require("../models/User");
 const keys = require("./keys");
 
 passport.use(
-  "googleToken",
-  new GooglePlusTokenStrategy(
+  new JwtStrategy(
     {
-      clientID: keys.google.clientId,
-      clientSecret: keys.google.clientSecret,
-      passReqToCallback: false
+      jwtFromRequest: ExtractJwt.fromHeader("authorization"),
+      secretOrKey: keys.secretOrKey
     },
-    (accessToken, refreshToken, profile, done) => {
-      // console.log(profile);
-      // console.log("------------------");
-      User.findOne({ "google.id": profile.id })
+    (jwt_payload, done) => {
+      User.findOne({ "google.id": jwt_payload.google.id })
         .then(user => {
           if (user) {
             return done(null, user);
           }
-          const email = profile.emails[0].value;
+          const email = jwt_payload.email;
           const index = email.indexOf("@");
           const handle = email.substring(0, index);
 
           const newUser = new User({
-            name: profile.displayName,
+            name: jwt_payload.name,
             email: email,
             displayName: handle,
-            avatar: profile.photos[0].value,
+            avatar: jwt_payload.avatar,
             google: {
-              id: profile.id,
-              email: email
+              id: jwt_payload.google.id,
+              email: jwt_payload.google.email
             }
           });
 
@@ -44,25 +40,6 @@ passport.use(
             .catch(err => done(err, false, err.message));
         })
         .catch(err => done(err, false, err.message));
-    }
-  )
-);
-
-passport.use(
-  new JwtStrategy(
-    {
-      jwtFromRequest: ExtractJwt.fromHeader("authorization"),
-      secretOrKey: keys.secretOrKey
-    },
-    (jwt_payload, done) => {
-      User.findById(jwt_payload._id)
-        .then(user => {
-          if (user) {
-            return done(null, user);
-          }
-          return done(null, false);
-        })
-        .catch(err => console.log(err));
     }
   )
 );

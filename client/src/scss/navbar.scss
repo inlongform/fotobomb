@@ -27,6 +27,11 @@ nav.navbar {
   .login-container {
     border-left: 1px solid $c-outline;
     padding-left: 15px;
+    .user-icon {
+      img {
+        max-width: 27px;
+      }
+    }
   }
   form {
     .fa-tags,

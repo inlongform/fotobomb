@@ -4,12 +4,12 @@
   background: $c-bg-color;
   right: 0;
   top: 66px;
-  z-index: 100;
+  // z-index: 100;
   transition: 0.3s;
   @include addpostShadow;
 
   &.closed {
-    right: -30%;
+    // right: -30%;
   }
   @media (max-width: 992px) {
     width: 35%;
@@ -41,6 +41,7 @@
       }
 
       .fa-cog,
+      .fa-sign-out-alt,
       .close {
         color: $c-blue;
       }
