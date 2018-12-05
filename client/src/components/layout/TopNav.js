@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import DatePicker from "react-datepicker";
-import moment from "moment";
+
 import { Navbar, NavbarBrand, Form, FormGroup, Input } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -33,12 +33,15 @@ class TopNav extends Component {
   buildQuery() {
     let query = ["/posts/details/query?"];
 
+    let sDate = new Date(this.state.startDate).toISOString();
+    let eDate = new Date(this.state.endDate).toISOString();
+
     if (this.state.startDate) {
-      query.push(`start=${this.state.startDate}&`);
+      query.push(`start=${sDate}&`);
     }
 
     if (this.state.endDate) {
-      query.push(`end=${this.state.endDate}&`);
+      query.push(`end=${eDate}&`);
     }
 
     if (this.state.tags) {
@@ -50,8 +53,7 @@ class TopNav extends Component {
 
   render() {
     const { errors } = this.state;
-    const { auth } = this.props;
-    console.log(this.props);
+
     return (
       <Navbar>
         <NavbarBrand href="/">
@@ -59,7 +61,6 @@ class TopNav extends Component {
         </NavbarBrand>
         <Form>
           <FormGroup>
-            {/* <FontAwesomeIcon icon="tags" className="mr-2" /> */}
             <Input
               type="text"
               placeholder="nyc, party"
@@ -69,7 +70,6 @@ class TopNav extends Component {
             />
           </FormGroup>
           <FormGroup>
-            {/* <FontAwesomeIcon icon="calendar-alt" className="mr-2" /> */}
             <DatePicker
               selected={this.state.startDate}
               className="date-picker form-control form-control-md"
@@ -83,7 +83,6 @@ class TopNav extends Component {
             />
           </FormGroup>
           <FormGroup>
-            {/* <FontAwesomeIcon icon="calendar-alt" className="mr-2" /> */}
             <DatePicker
               selected={this.state.endDate}
               className="date-picker form-control form-control-md"
@@ -101,7 +100,6 @@ class TopNav extends Component {
         </Form>
         <div className="login-container">
           <LoginPopover />
-          {/* <FontAwesomeIcon icon="user-circle" /> */}
         </div>
       </Navbar>
     );

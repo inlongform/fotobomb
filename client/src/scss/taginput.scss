@@ -1,0 +1,17 @@
+.react-tagsinput {
+  .react-tagsinput-input {
+    font-size: 14px;
+    font-family: $poppins;
+  }
+
+  .react-tagsinput-tag {
+    background-color: transparent;
+    border-color: $c-outline;
+    color: $c-red;
+    padding: 4px;
+    font-family: inherit;
+  }
+}
+.react-tagsinput--focused {
+  border-color: $c-yellow;
+}

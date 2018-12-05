@@ -1,29 +1,108 @@
 import React, { Component, Fragment } from "react";
 import { Input, Button, FormGroup, Label } from "reactstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { CAPTION_LENGTH } from "../../utils/constants";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 
+import { CAPTION_LENGTH } from "../../utils/constants";
 import { addPost } from "../../actions/postActions";
 import { toggleUploadPanel } from "../../actions/userActions";
+import SettingsBtn from "./Btns/SettingsBtn";
+import SignOutBtn from "./Btns/SignOutBtn";
+import FileUpload from "./FileUpload";
+import TagInput from "./TagInput";
+import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 
 class AddPost extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   isOpen: false
-    // };
+    this.state = {
+      caption: "",
+      file: {},
+      location: "",
+      tags: [],
+      errors: {},
+      panelHeight: 66
+    };
 
-    // this.togglePanel = this.togglePanel.bind(this);
+    this.onChange = this.onChange.bind(this);
+
+    this.onUpdateFile = this.onUpdateFile.bind(this);
+    this.onSubmitPost = this.onSubmitPost.bind(this);
   }
 
-  // togglePanel() {
-  //   let currentState = !this.state.isOpen;
-  //   this.setState({
-  //     isOpen: currentState
-  //   });
-  // }
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  onTagChange(val) {
+    this.setState({
+      tags: val.map(nVal => {
+        return String(nVal).replace(/\s+/g, "");
+      })
+    });
+  }
+
+  onUpdateFile(file) {
+    this.setState({
+      file: file
+    });
+  }
+
+  onSubmitPost(e) {
+    e.preventDefault();
+    if (!this.state.file["name"]) {
+      alert("you forgot the image!");
+      return;
+    }
+
+    if (this.state.tags < 1) {
+      alert("There must be at least 1 tag associated with this post!");
+      return;
+    }
+
+    if (this.state.caption > CAPTION_LENGTH) {
+      alert(`your caption needs to be less than ${CAPTION_LENGTH} characters`);
+      return;
+    }
+
+    let formData = new FormData();
+
+    const { user } = this.props.auth;
+
+    formData.append("file", this.state.file);
+    formData.append("tags", this.state.tags);
+    formData.append("id", user.id);
+    if (this.state.caption) formData.append("caption", this.state.caption);
+    // if (this.state.location) formData.append("location", this.state.location);
+
+    this.props.addPost(formData, this.props.history);
+  }
+
+  componentDidMount() {
+    let resizeId;
+    const that = this;
+
+    this.resizePanel();
+
+    window.onresize = () => {
+      clearTimeout(resizeId);
+      resizeId = setTimeout(() => {
+        that.resizePanel();
+      }, 500);
+    };
+  }
+
+  resizePanel() {
+    const navBar = document.getElementsByClassName("navbar")[0];
+    this.setState({
+      panelHeight: window.innerHeight - navBar.clientHeight
+    });
+  }
+
+  closePanel(e) {
+    e.preventDefault();
+    this.props.toggleUploadPanel(false);
+  }
 
   render() {
     const { auth, users } = this.props;
@@ -34,58 +113,56 @@ class AddPost extends Component {
           <div
             id="addpost"
             className={!users.showUploadPanel ? "closed" : null}
+            style={{ height: this.state.panelHeight }}
           >
             <div>
               <div className="post-inner">
                 <div className="add-header">
                   <h5 className="heavy">Add Post</h5>
                   <div>
-                    <a href="#" className="ml-2">
-                      <FontAwesomeIcon icon="cog" className="mr-2" />
-                    </a>
-                    <FontAwesomeIcon icon="sign-out-alt" className="mr-2" />
+                    <SettingsBtn />
+                    <SignOutBtn />
                     <button
                       type="button"
                       className="close"
                       aria-label="Close"
-                      // onClick={this.togglePanel}
+                      id="sign_out_pop"
+                      onClick={this.closePanel.bind(this)}
                     >
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                 </div>
                 <div className="sep" />
-                <Label className="heavy mt-3">Upload</Label>
-                <FormGroup className="mb-4">
-                  <Input
-                    type="file"
-                    className="custom-file-input"
-                    id="chooseFile"
-                    name="chooseFile"
-                    aria-describedby="inputGroupFileAddon"
-                  />
-                  {/* <Input /> */}
-                  <Label className="custom-file-label" for="chooseFile">
-                    filename.jpg
-                  </Label>
-                </FormGroup>
-                <FormGroup className="mb-4">
-                  <img src="/images/thumb.jpg" />
-                </FormGroup>
+
+                <FileUpload updateFile={this.onUpdateFile} />
                 <FormGroup className="mb-4">
                   <Label className="heavy">
                     Tags <small>(1 tag required)</small>
                   </Label>
-                  <Input />
+                  <TagInput
+                    onTagChange={this.onTagChange.bind(this)}
+                    name="tags"
+                  />
                 </FormGroup>
                 <FormGroup className="mt-3">
                   <Label className="heavy">
                     Caption <small>(optional)</small>
                   </Label>
-                  <Input type="textarea" />
+                  <TextAreaFieldGroup
+                    name="caption"
+                    value={this.state.caption}
+                    onChange={this.onChange}
+                  />
                 </FormGroup>
                 <FormGroup className="mt-3 add-footer">
-                  <Button color="link">Submit</Button>
+                  <Button
+                    color="link"
+                    value="submit"
+                    onClick={this.onSubmitPost}
+                  >
+                    Submit
+                  </Button>
                 </FormGroup>
               </div>
             </div>
@@ -99,7 +176,7 @@ class AddPost extends Component {
 AddPost.propTypes = {
   addPost: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  showUploadPanel: PropTypes.bool,
+  toggleUploadPanel: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired
 };
 

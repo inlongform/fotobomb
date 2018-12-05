@@ -6,10 +6,11 @@
   top: 66px;
   // z-index: 100;
   transition: 0.3s;
+  overflow: auto;
   @include addpostShadow;
 
   &.closed {
-    // right: -30%;
+    right: -30%;
   }
   @media (max-width: 992px) {
     width: 35%;
@@ -56,4 +57,6 @@
       justify-content: flex-end;
     }
   }
+
+  @import "taginput";
 }

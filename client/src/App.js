@@ -104,8 +104,8 @@ class App extends Component {
                 <Route exact path="/posts/details/query" component={Results} />
                 <Route exact path="/posts/user/:id" component={Results} />
                 <Route exact path="/posts/tag/:tag" component={Results} />
-                <PrivateRoute exact path="/add-post" component={AddPost} />
-                <PrivateRoute exact path="/settings" component={Settings} /> */}
+                <PrivateRoute exact path="/add-post" component={AddPost} />*/}
+                <PrivateRoute exact path="/settings" component={Settings} />
                 <Route exact component={NotFound} />
               </Switch>
             </Container>

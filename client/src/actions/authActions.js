@@ -15,8 +15,6 @@ export const loginUser = user => dispatch => {
   axios
     .get("/api/users/auth/google")
     .then(res => {
-      console.log(res);
-
       // Save to localStorage
       const { token } = res.data;
       // Set token to ls

@@ -20,7 +20,6 @@ export const getUsers = () => dispatch => {
 };
 
 export const toggleUploadPanel = bool => dispatch => {
-  console.log("hello");
   dispatch({
     type: SHOW_UPLOAD_PANEL,
     payload: bool

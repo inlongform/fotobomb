@@ -1,11 +1,5 @@
-import React, { Component } from "react";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input,
-  Label
-} from "reactstrap";
+import React, { Component, Fragment } from "react";
+import { FormGroup, Input, Label } from "reactstrap";
 
 import { FILE_TYPES, MAX_FILE_SIZE } from "../../utils/constants";
 
@@ -50,13 +44,9 @@ class FileUpload extends Component {
 
   render() {
     return (
-      <InputGroup>
-        <h5 className="upload-headers">Upload Photo</h5>
-
-        <InputGroupAddon addonType="prepend">
-          <InputGroupText>Upload</InputGroupText>
-        </InputGroupAddon>
-        <div className="custom-file">
+      <Fragment>
+        <Label className="heavy mt-3">Upload</Label>
+        <FormGroup className="mb-4">
           <Input
             type="file"
             className="custom-file-input form-control"
@@ -65,28 +55,30 @@ class FileUpload extends Component {
             aria-describedby="inputGroupFileAddon"
             onChange={this.onImageChange.bind(this)}
           />
+
           <Label className="custom-file-label" for="chooseFile">
             {this.state.file.name ? this.state.file.name : "choose file"}
           </Label>
-        </div>
-        {/* show uploaded image */}
-        {this.state.file.name ? (
-          <div
-            style={{
-              width: "300px",
-              marginTop: "10px"
-            }}
-          >
-            <img
-              id="output_image"
+        </FormGroup>
+        <FormGroup className="mb-4">
+          {this.state.file.name ? (
+            <div
               style={{
-                width: "100%"
+                width: "300px",
+                marginTop: "10px"
               }}
-              alt="preview"
-            />
-          </div>
-        ) : null}
-      </InputGroup>
+            >
+              <img
+                id="output_image"
+                style={{
+                  width: "100%"
+                }}
+                alt="preview"
+              />
+            </div>
+          ) : null}
+        </FormGroup>
+      </Fragment>
     );
   }
 }

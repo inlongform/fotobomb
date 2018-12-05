@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Popover, PopoverBody, Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FIREBASE_CONFIG } from "../../utils/constants";
 import { connect } from "react-redux";
 import { loginUser, logoutUser } from "../../actions/authActions";
+import { toggleUploadPanel } from "../../actions/userActions";
 import PropTypes from "prop-types";
 
 import firebase from "firebase/app";
@@ -68,20 +69,18 @@ class LoginPopover extends Component {
     this.unregisterAuthObserver();
   }
 
-  onLogOut(e) {
+  openPanel(e) {
     e.preventDefault();
-    firebase.auth().signOut();
-    this.props.logoutUser();
+    this.props.toggleUploadPanel(true);
   }
 
   render() {
     const { auth } = this.props;
-    // const { currentUser } = firebase.auth();
-    // console.log(currentUser);
+
     return (
       <div style={{ display: "flex" }}>
-        <a id="Popover1" onClick={this.toggle}>
-          {auth && auth.user.avatar ? (
+        {auth && auth.user.avatar ? (
+          <a onClick={this.openPanel.bind(this)}>
             <div className="user-icon">
               <img
                 src={auth.user.avatar}
@@ -89,36 +88,30 @@ class LoginPopover extends Component {
                 className="rounded-circle"
               />
             </div>
-          ) : (
-            <FontAwesomeIcon icon="user-circle" />
-          )}
-        </a>
+          </a>
+        ) : (
+          <Fragment>
+            <a id="Popover1" onClick={this.toggle}>
+              <FontAwesomeIcon icon="user-circle" />
+            </a>
 
-        <Popover
-          placement="bottom-end"
-          isOpen={this.state.popoverOpen}
-          target="Popover1"
-          toggle={this.toggle}
-        >
-          <PopoverBody>
-            {this.state.isSignedIn ? (
-              <span className="google-btn">
-                <Button color="danger" onClick={this.onLogOut.bind(this)}>
-                  {/* <FontAwesome name="google" className="fab" /> */}
-                  <span className="ml-2">Sign out</span>
-                </Button>
-              </span>
-            ) : (
-              <span className="google-btn">
-                <StyledFirebaseAuth
-                  uiConfig={this.uiConfig}
-                  firebaseAuth={firebase.auth()}
-                />
-              </span>
-            )}
-            {/* </form> */}
-          </PopoverBody>
-        </Popover>
+            <Popover
+              placement="bottom-end"
+              isOpen={this.state.popoverOpen}
+              target="Popover1"
+              toggle={this.toggle}
+            >
+              <PopoverBody>
+                <span className="google-btn">
+                  <StyledFirebaseAuth
+                    uiConfig={this.uiConfig}
+                    firebaseAuth={firebase.auth()}
+                  />
+                </span>
+              </PopoverBody>
+            </Popover>
+          </Fragment>
+        )}
       </div>
     );
   }
@@ -126,16 +119,16 @@ class LoginPopover extends Component {
 
 LoginPopover.propTypes = {
   loginUser: PropTypes.func.isRequired,
-  logoutUser: PropTypes.func.isRequired,
-
+  toggleUploadPanel: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  users: state.users
 });
 
 export default connect(
   mapStateToProps,
-  { loginUser, logoutUser }
+  { loginUser, toggleUploadPanel }
 )(LoginPopover);
