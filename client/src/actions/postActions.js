@@ -103,10 +103,11 @@ export const getPostsByTag = tag => dispatch => {
 //SINGLE POST
 export const getPostById = id => dispatch => {
   dispatch(setPostLoading());
-
+  console.log("id", id);
   axios
     .get(`/api/posts/${id}`)
     .then(res => {
+      console.log(res);
       dispatch({
         type: GET_POST_BY_ID,
         payload: res.data

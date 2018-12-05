@@ -42,6 +42,7 @@ export default (state = initialState, action) => {
       };
     }
     case GET_POST_BY_ID: {
+      console.log(action.payload);
       return {
         ...state,
         post: action.payload,

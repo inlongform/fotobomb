@@ -1,14 +1,15 @@
 import React from "react";
-import spinner from "./spinner.gif";
+import { Container } from "reactstrap";
 
 export default () => {
   return (
-    <div>
-      <img
-        src={spinner}
-        alt="loading..."
-        style={{ width: "200px", margin: "auto", display: "block" }}
-      />
-    </div>
+    <Container className="spinner">
+      <div className="lds-ellipsis">
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
+    </Container>
   );
 };

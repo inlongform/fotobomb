@@ -57,7 +57,7 @@ class TopNav extends Component {
     return (
       <Navbar>
         <NavbarBrand href="/">
-          <img src="images/logo.svg" alt="logo" />
+          <img src="/images/logo.svg" alt="logo" />
         </NavbarBrand>
         <Form>
           <FormGroup>

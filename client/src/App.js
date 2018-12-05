@@ -15,7 +15,7 @@ import Landing from "./components/layout/Landing";
 import TopNav from "./components/layout/TopNav";
 
 import NotFound from "./components/not-found/NotFound";
-import Post from "./components/post/Post";
+import Full from "./components/post/Full";
 import AddPost from "./components/post/AddPost";
 import Results from "./components/results/Results";
 import Settings from "./components/settings/Settings";
@@ -98,6 +98,7 @@ class App extends Component {
             <AddPost />
             <Container fluid={true} id="main">
               <Switch>
+                <Route exact path="/post/:id" component={Full} />
                 {/* <Route exact path="/r/:id" component={RedirectId} />
                 <Route exact path="/" component={Landing} />
                 <Route exact path="/post/:id" component={Post} />

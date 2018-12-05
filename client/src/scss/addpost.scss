@@ -4,7 +4,7 @@
   background: $c-bg-color;
   right: 0;
   top: 66px;
-  // z-index: 100;
+  z-index: 1;
   transition: 0.3s;
   overflow: auto;
   @include addpostShadow;

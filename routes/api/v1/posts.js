@@ -102,9 +102,13 @@ router.get("/", (req, res) => {
 // @access  Public
 router.get("/:id", (req, res) => {
   let error = { success: false };
+  console.log(req.params.id);
   Post.findById(req.params.id)
     .populate("user", ["displayName", "avatar"])
-    .then(post => res.json(post))
+    .then(post => {
+      console.log(post);
+      res.json(post);
+    })
     .catch(err => {
       error.message = "No Post Found";
       res.status(404).json(error);

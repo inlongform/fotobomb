@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
-import { Popover, PopoverBody, Button } from "reactstrap";
+import { Popover, PopoverBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FIREBASE_CONFIG } from "../../utils/constants";
 import { connect } from "react-redux";
-import { loginUser, logoutUser } from "../../actions/authActions";
+import { loginUser } from "../../actions/authActions";
 import { toggleUploadPanel } from "../../actions/userActions";
 import PropTypes from "prop-types";
 
