@@ -20,7 +20,7 @@ class SignOutBtn extends Component {
     e.preventDefault();
     firebase.auth().signOut();
     this.props.logoutUser();
-    this.props.toggleUploadPanel(true);
+    this.props.toggleUploadPanel(false);
   }
 
   render() {

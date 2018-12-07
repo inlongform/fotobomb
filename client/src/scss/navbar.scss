@@ -4,6 +4,10 @@ nav.navbar {
   justify-content: flex-start;
   flex-wrap: nowrap;
   margin-left: auto;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 2;
 
   .navbar-brand {
     width: 160px;
@@ -28,6 +32,7 @@ nav.navbar {
     border-left: 1px solid $c-outline;
     padding-left: 15px;
     .user-icon {
+      cursor: pointer;
       img {
         max-width: 27px;
       }

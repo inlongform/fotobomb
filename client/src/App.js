@@ -11,7 +11,7 @@ import { setCurrentUser, logoutUser } from "./actions/authActions";
 
 //templates
 import Landing from "./components/layout/Landing";
-// import Branding from "./components/layout/Branding";
+
 import TopNav from "./components/layout/TopNav";
 
 import NotFound from "./components/not-found/NotFound";
@@ -93,19 +93,21 @@ class App extends Component {
               title="this is the title"
             />
             <PopOver showModal={false} />
-            {/* <Branding /> */}
+
             <TopNav />
             <AddPost />
             <Container fluid={true} id="main">
               <Switch>
                 <Route exact path="/post/:id" component={Full} />
-                {/* <Route exact path="/r/:id" component={RedirectId} />
+                <Route exact path="/r/:id" component={RedirectId} />
                 <Route exact path="/" component={Landing} />
-                <Route exact path="/post/:id" component={Post} />
+                {/* 
+                <Route exact path="/" component={Landing} />
+
                 <Route exact path="/posts/details/query" component={Results} />
                 <Route exact path="/posts/user/:id" component={Results} />
                 <Route exact path="/posts/tag/:tag" component={Results} />
-                <PrivateRoute exact path="/add-post" component={AddPost} />*/}
+                */}
                 <PrivateRoute exact path="/settings" component={Settings} />
                 <Route exact component={NotFound} />
               </Switch>

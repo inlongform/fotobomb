@@ -12,6 +12,7 @@ $c-blue: #2d4e64;
 $c-yellow: #f6bd60;
 $c-pink: #f5cac3;
 $c-red: #f28481;
+$c-error: #d9534f;
 
 #firebaseui_container {
   width: 236px;
@@ -44,10 +45,6 @@ $c-red: #f28481;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-h6 {
-  font-size: 14px;
-}
-
 body {
   background: $c-bg-color;
   color: $c-text;
@@ -57,6 +54,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-image: url("/images/stripes.png");
   background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 @import "app";

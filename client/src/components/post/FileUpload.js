@@ -59,20 +59,23 @@ class FileUpload extends Component {
           <Label className="custom-file-label" for="chooseFile">
             {this.state.file.name ? this.state.file.name : "choose file"}
           </Label>
+          <small className="error hide">you forgot an image</small>
         </FormGroup>
         <FormGroup className="mb-4">
           {this.state.file.name ? (
             <div
               style={{
-                width: "300px",
+                // width: "300px",
                 marginTop: "10px"
               }}
             >
               <img
                 id="output_image"
-                style={{
-                  width: "100%"
-                }}
+                style={
+                  {
+                    // width: "100%"
+                  }
+                }
                 alt="preview"
               />
             </div>

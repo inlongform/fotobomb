@@ -6,7 +6,9 @@ import {
   GET_ERRORS,
   POST_LOADING,
   DELETE_POST,
-  CLEAR_ERRORS
+  CLEAR_ERRORS,
+  UPLOADING,
+  SHOW_UPLOAD_PANEL
 } from "./types";
 
 //add post
@@ -14,25 +16,38 @@ export const addPost = (postData, history) => dispatch => {
   // dispatch(clearErrors());
 
   console.log("postData", postData);
+  dispatch(togglePostUpload(true));
 
   axios
     .post("/api/posts", postData)
     .then(res => {
-      console.log(res);
-      // prompt("data", res.data);
-      // dispatch({
-      //   type: ADD_POST,
-      //   payload: {}
-      // });
+      dispatch(togglePostUpload(false));
+      dispatch({
+        type: SHOW_UPLOAD_PANEL,
+        payload: false
+      });
+
+      dispatch({
+        type: ADD_POST,
+        payload: res.data
+      });
+
       history.push(`/post/${res.data._id}`);
     })
     .catch(err => {
-      console.log(err.response);
+      console.log(err);
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
       });
     });
+};
+
+export const togglePostUpload = bool => dispatch => {
+  dispatch({
+    type: UPLOADING,
+    payload: bool
+  });
 };
 
 //get all posts
@@ -86,7 +101,6 @@ export const getPostsByTag = tag => dispatch => {
   axios
     .get(`/api/posts/tag/${tag}`)
     .then(res => {
-      console.log(res);
       dispatch({
         type: GET_POSTS,
         payload: res.data
@@ -103,11 +117,10 @@ export const getPostsByTag = tag => dispatch => {
 //SINGLE POST
 export const getPostById = id => dispatch => {
   dispatch(setPostLoading());
-  console.log("id", id);
+  console.log("get post by id id", id);
   axios
     .get(`/api/posts/${id}`)
     .then(res => {
-      console.log(res);
       dispatch({
         type: GET_POST_BY_ID,
         payload: res.data

@@ -79,8 +79,8 @@ router.get("/", (req, res) => {
       };
       return res.status(404).json(error);
     }
-    console.log("count", count, "totalPages", totalPages);
-    console.log("currentPage:", currentPage, "skipAmt", skipAmt);
+    // console.log("count", count, "totalPages", totalPages);
+    // console.log("currentPage:", currentPage, "skipAmt", skipAmt);
 
     Post.find()
       .limit(pageTotal)
@@ -102,7 +102,7 @@ router.get("/", (req, res) => {
 // @access  Public
 router.get("/:id", (req, res) => {
   let error = { success: false };
-  console.log(req.params.id);
+
   Post.findById(req.params.id)
     .populate("user", ["displayName", "avatar"])
     .then(post => {
@@ -176,6 +176,7 @@ router.post(
 
   (req, res) => {
     let error = { success: false };
+    // console.log(req);
     if (!req.files) {
       return res
         .status(400)
@@ -190,12 +191,14 @@ router.post(
           const newFileName = `${newName}.${image.getExtension()}`;
           const w = image.getWidth();
           const h = image.getHeight();
+          let orientation = "landscape";
           //landscape
           let newWidth = keys.imgWidthLandscape;
 
           //portrait
           if (w < h) {
             newWidth = keys.imageWidthPortrait;
+            orientation = "portrait";
           }
 
           image
@@ -207,10 +210,12 @@ router.post(
                 caption: req.body.caption,
                 image_id: newFileName,
                 user: req.user.id,
-                tags: req.body.tags.split(",")
+                tags: req.body.tags.split(","),
+                orientation: orientation
               });
 
               newPost
+
                 .save()
                 .then(post => {
                   writeImage(image, thumbPath, keys.thumbWidth, newFileName);

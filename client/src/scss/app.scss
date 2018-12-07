@@ -1,5 +1,27 @@
 #main {
   overflow-x: hidden;
+  margin-top: 125px;
+}
+
+h6 {
+  font-size: 14px;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: inline;
+}
+
+.center-block {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.error {
+  color: $c-error;
 }
 
 .react-datepicker-popper {
@@ -43,21 +65,16 @@
 @import "spinner";
 @import "addpost";
 @import "modal";
+@import "card";
 #settings {
-  margin-top: 50px;
   @import "settings";
 }
 
 #full {
-  margin-top: 50px;
   @import "full";
 }
 
 #results {
-  margin-top: 50px;
-  .row {
-    @import "card";
-  }
 }
 @import "navbar";
 @import "icons";

@@ -12,8 +12,16 @@ passport.use(
       secretOrKey: keys.secretOrKey
     },
     (jwt_payload, done) => {
-      User.findOne({ "google.id": jwt_payload.google.id })
+      let query;
+
+      if (jwt_payload._id) {
+        query = User.findById(jwt_payload._id);
+      } else {
+        query = User.findOne({ "google.id": jwt_payload.google.id });
+      }
+      query
         .then(user => {
+          // console.log("user", user);
           if (user) {
             return done(null, user);
           }

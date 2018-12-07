@@ -48,6 +48,12 @@ class Full extends Component {
 
   render() {
     const { post, loading } = this.props.post;
+    console.log(post);
+    let cols = "10";
+
+    if (post.orientation && post.orientation === "portrait") {
+      cols = "8";
+    }
 
     return (
       <div>
@@ -56,7 +62,7 @@ class Full extends Component {
         ) : (
           <Container id="full">
             <Row>
-              <Col>
+              <Col lg={cols} className="center-block">
                 {!loading && post.user ? (
                   <Card>
                     <CardHeader>
@@ -128,10 +134,9 @@ class Full extends Component {
                           {post.tags &&
                             post.tags.map(tag => {
                               return (
-                                <li>
+                                <li key={tag}>
                                   <Link
                                     to={`/posts/tag/${tag}`}
-                                    key={tag}
                                     className="mr-2"
                                   >
                                     #{tag}

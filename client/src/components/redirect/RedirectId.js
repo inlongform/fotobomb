@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Redirect } from "react-router";
+import Spinner from "../common/Spinner";
 
 class RedirectId extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class RedirectId extends Component {
 
   checkState() {
     if (this.props.match.params.id && this.state.id === null) {
-      return <h5>Redirecting...</h5>;
+      return <Spinner />;
     } else {
       if (this.state.id) {
         return <Redirect to={`/post/${this.state.id}`} />;

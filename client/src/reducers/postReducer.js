@@ -3,17 +3,26 @@ import {
   GET_POSTS,
   POST_LOADING,
   DELETE_POST,
-  GET_POST_BY_ID
+  GET_POST_BY_ID,
+  UPLOADING
 } from "../actions/types";
 
 const initialState = {
   posts: [],
   post: {},
-  loading: false
+  loading: false,
+  uploading: false
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case UPLOADING: {
+      return {
+        ...state,
+        uploading: action.payload
+      };
+    }
+
     case POST_LOADING: {
       return {
         ...state,
@@ -51,9 +60,10 @@ export default (state = initialState, action) => {
     }
 
     case ADD_POST: {
+      console.log(action.payload);
       return {
         ...state,
-        post: [action.payload, ...state.post]
+        post: action.payload
       };
     }
     case DELETE_POST: {

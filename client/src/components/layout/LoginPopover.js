@@ -76,10 +76,10 @@ class LoginPopover extends Component {
 
   render() {
     const { auth } = this.props;
-
+    // console.log(this.props);
     return (
       <div style={{ display: "flex" }}>
-        {auth && auth.user.avatar ? (
+        {auth && auth.isAuthenticated ? (
           <a onClick={this.openPanel.bind(this)}>
             <div className="user-icon">
               <img

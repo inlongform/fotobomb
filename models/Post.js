@@ -20,6 +20,10 @@ const PostSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  orientation: {
+    type: String,
+    required: true
+  },
   shortId: {
     type: String,
     default: shortid.generate
@@ -30,6 +34,15 @@ const PostSchema = new Schema({
   location: {
     type: String
   }
+});
+
+PostSchema.post("save", (doc, next) => {
+  doc
+    .populate("user", ["displayName", "avatar"])
+    .execPopulate()
+    .then(() => {
+      next();
+    });
 });
 
 const Post = mongoose.model("post", PostSchema);

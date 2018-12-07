@@ -56,6 +56,11 @@
       display: flex;
       justify-content: flex-end;
     }
+
+    .custom-file-label {
+      white-space: nowrap;
+      overflow: hidden;
+    }
   }
 
   @import "taginput";
