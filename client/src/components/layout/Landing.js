@@ -21,13 +21,15 @@ class Landing extends Component {
   }
   componentDidMount() {
     this.props.getPosts(1);
+    console.log(this.props);
+    // this.preloadImages(items);
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.errors) {
-      this.setState({ errors: newProps.errors });
-    }
-  }
+  // componentDidUpdate(newProps) {
+  //   if (newProps.errors) {
+  //     this.setState({ errors: newProps.errors });
+  //   }
+  // }
 
   nextPage(e) {
     e.preventDefault();
@@ -40,14 +42,47 @@ class Landing extends Component {
     }
   }
 
+  preloadImages(items) {
+    const images =
+      items &&
+      items.map(post => {
+        return `/images/posts/thumb/${post.image_id}`;
+      });
+    let loaded = 0;
+
+    if (images && images.length > 0) {
+      images.forEach(element => {
+        const img = new Image();
+        img.src = element;
+        img.onload = () => {
+          loaded++;
+          // console.log(loaded, images.length);
+          if (loaded >= images.length - 1) {
+            this.setState({ loaded: true });
+            console.log("done");
+          }
+        };
+      });
+    }
+  }
+
   render() {
-    const { errors, loading } = this.props.post;
+    const { loading } = this.props.post;
     const { items, count, currentPage, totalPages } = this.props.post.posts;
+
+    // if (!loading) {
+    //   this.preloadImages(items);
+    // }
+    // this.preloadImages(items);
+
+    // if (!this.state.loaded) {
+    //   this.preloadImages(items);
+    // }
 
     const nItems =
       items &&
       items.map((post, i) => {
-        return <ImgItem key={post._id} data={post} count={i} />;
+        return <ImgItem key={post.date} data={post} />;
       });
     return (
       <div className="outer-container">

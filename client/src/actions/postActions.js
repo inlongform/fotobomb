@@ -53,11 +53,10 @@ export const togglePostUpload = bool => dispatch => {
 //get all posts
 export const getPosts = page => dispatch => {
   dispatch(setPostLoading());
-  console.log("actions page", page);
+
   axios
     .get(`/api/posts/?page=${page}`)
     .then(res => {
-      console.log("reponse", res);
       dispatch({
         type: GET_POSTS,
         payload: res.data
@@ -101,6 +100,7 @@ export const getPostsByTag = tag => dispatch => {
   axios
     .get(`/api/posts/tag/${tag}`)
     .then(res => {
+      console.log(res.data);
       dispatch({
         type: GET_POSTS,
         payload: res.data

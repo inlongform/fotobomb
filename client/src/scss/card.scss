@@ -1,6 +1,6 @@
 .card {
   @include shadow;
-  > img {
+  a > img {
     padding: 10px;
   }
   .card-body {
@@ -43,19 +43,3 @@
     }
   }
 }
-
-// @media (min-width: 576px) {
-// }
-
-// @media (min-width: 992px) {
-//   .card-columns {
-//     column-count: 4;
-//     -webkit-column-count: 4;
-//   }
-// }
-
-// @media (min-width: 1200px) {
-//   .card-columns {
-//     column-count: 5;
-//   }
-// }

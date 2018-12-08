@@ -101,13 +101,9 @@ class App extends Component {
                 <Route exact path="/post/:id" component={Full} />
                 <Route exact path="/r/:id" component={RedirectId} />
                 <Route exact path="/" component={Landing} />
-                {/* 
-                <Route exact path="/" component={Landing} />
-
                 <Route exact path="/posts/details/query" component={Results} />
                 <Route exact path="/posts/user/:id" component={Results} />
                 <Route exact path="/posts/tag/:tag" component={Results} />
-                */}
                 <PrivateRoute exact path="/settings" component={Settings} />
                 <Route exact component={NotFound} />
               </Switch>

@@ -123,7 +123,7 @@ router.get("/user/:id", (req, res) => {
 
   Post.find({ user: req.params.id })
     .populate("user", ["displayName", "avatar"])
-    .then(posts => res.json(posts))
+    .then(posts => res.json({ items: posts }))
     .catch(err => {
       error.message = "Error Retrieving Posts";
       res.status(404).json(error);
@@ -141,7 +141,7 @@ router.get("/tag/:tag", (req, res) => {
     }
   })
     .populate("user", ["displayName", "avatar"])
-    .then(posts => res.json(posts))
+    .then(posts => res.json({ items: posts }))
     .catch(err => {
       error.message = "Error Retrieving Posts";
       res.status(404).json(error);
@@ -159,7 +159,7 @@ router.get("/details/query", (req, res) => {
   Post.find(queryBuilder(start, end, tags))
     .then(posts => {
       console.log(posts);
-      res.json(posts);
+      res.json({ items: posts });
     })
     .catch(err => {
       error.message = "Error Retrieving Posts";

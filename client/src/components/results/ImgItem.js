@@ -48,7 +48,7 @@ const ImgItem = props => {
             {tags &&
               tags.map((tag, i) => {
                 return (
-                  <li key={i}>
+                  <li key={tag}>
                     <Link to={`/posts/tag/${tag}`} className="card-link">
                       #{tag}
                     </Link>

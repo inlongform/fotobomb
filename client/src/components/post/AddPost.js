@@ -107,7 +107,7 @@ class AddPost extends Component {
 
   uploadProgress() {
     const { auth, post } = this.props;
-    console.log(post);
+
     if (auth.isAuthenticated) {
       if (post.uploading) {
         return <Spinner />;
@@ -163,7 +163,7 @@ class AddPost extends Component {
 
   render() {
     const { users } = this.props;
-    console.log(this.props);
+
     return (
       <Fragment>
         <div

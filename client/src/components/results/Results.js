@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import {
@@ -8,6 +8,7 @@ import {
 } from "../../actions/postActions";
 import ImgItem from "./ImgItem";
 import { Container, Row } from "reactstrap";
+import Spinner from "../common/Spinner";
 
 class Results extends Component {
   componentDidMount() {
@@ -38,21 +39,38 @@ class Results extends Component {
     }
   }
   render() {
-    const { posts } = this.props.posts;
+    const { loading } = this.props.post;
+    const { items, count, currentPage, totalPages } = this.props.post.posts;
+    console.log(this.props);
+
+    const nItems =
+      items &&
+      items.map((post, i) => {
+        return <ImgItem key={post.date} data={post} />;
+      });
 
     return (
       <div className="outer-container">
-        <Container id="main-content">
-          <Row>
-            {posts && posts.length > 0 ? (
-              posts.map(post => {
-                return <ImgItem key={post._id} data={post} />;
-              })
-            ) : (
-              <h3>There are no posts</h3>
-            )}
-          </Row>
-        </Container>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <Container id="main-content">
+            <Row>
+              {items && items.length > 0 ? (
+                <Fragment>
+                  {nItems}
+                  {/* {currentPage >= totalPages ? null : (
+                    <button onClick={this.nextPage.bind(this)}>
+                      Load more
+                    </button>
+                  )} */}
+                </Fragment>
+              ) : (
+                <h3 className="center-block">There are no posts</h3>
+              )}
+            </Row>
+          </Container>
+        )}
       </div>
     );
   }
@@ -62,11 +80,11 @@ Results.propTypes = {
   getPostsByUser: PropTypes.func.isRequired,
   getPostsByTag: PropTypes.func.isRequired,
   getPostsByDetails: PropTypes.func.isRequired,
-  posts: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  posts: state.post
+  post: state.post
 });
 
 export default connect(
