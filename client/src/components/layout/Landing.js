@@ -79,6 +79,10 @@ class Landing extends Component {
     //   this.preloadImages(items);
     // }
 
+    const masonryOptions = {
+      percentPosition: true
+    };
+
     const nItems =
       items &&
       items.map((post, i) => {
@@ -90,19 +94,42 @@ class Landing extends Component {
           <Spinner />
         ) : (
           <Container id="main-content">
-            <Row>
+            <Row className="grid-holder">
               {items ? (
                 <Fragment>
-                  {nItems}
-                  {currentPage >= totalPages ? null : (
-                    <button onClick={this.nextPage.bind(this)}>
-                      Load more
-                    </button>
-                  )}
+                  <Masonry
+                    className={"grid-holder"} // default ''
+                    elementType={"div"} // default 'div'
+                    options={{
+                      percentPosition: true,
+                      fitWidth: true,
+                      transitionDuration: "0.2s",
+                      itemSelector: ".col-xl-3"
+                    }} // default {}
+                    disableImagesLoaded={false} // default false
+                    // updateOnEachImageLoad={false} // default false and works only if disableImagesLoaded is false
+                    // imagesLoadedOptions={imagesLoadedOptions} // default {}
+                  >
+                    {nItems}
+                  </Masonry>
                 </Fragment>
               ) : (
                 <h3 className="center-block">There are no posts</h3>
               )}
+            </Row>
+            <Row>
+              {items ? (
+                <Fragment>
+                  {currentPage >= totalPages ? null : (
+                    <button
+                      onClick={this.nextPage.bind(this)}
+                      className="mt-4 mb-4 center-block more-btn"
+                    >
+                      Load more
+                    </button>
+                  )}
+                </Fragment>
+              ) : null}
             </Row>
           </Container>
         )}

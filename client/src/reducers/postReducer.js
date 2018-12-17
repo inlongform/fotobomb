@@ -33,7 +33,7 @@ export default (state = initialState, action) => {
       let { items } = action.payload;
 
       const prevItems = state.posts.items;
-
+      //this needs to be thought out a little better
       if (prevItems && prevItems.length > 0) {
         items = [...state.posts.items, ...action.payload.items];
       }

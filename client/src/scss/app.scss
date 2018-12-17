@@ -24,6 +24,18 @@ h6 {
   color: $c-error;
 }
 
+.grid-holder {
+  width: 100%;
+}
+
+.more-btn {
+  background: $c-blue;
+  color: $c-bg-color;
+  border: none;
+  padding: 5px 40px;
+  cursor: pointer;
+}
+
 .react-datepicker-popper {
   z-index: 2;
   .react-datepicker {

@@ -52,7 +52,7 @@ class Full extends Component {
     let cols = "10";
 
     if (post.orientation && post.orientation === "portrait") {
-      cols = "8";
+      cols = "7";
     }
 
     return (

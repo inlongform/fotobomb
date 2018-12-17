@@ -162,7 +162,7 @@ class AddPost extends Component {
   }
 
   render() {
-    const { users } = this.props;
+    const { auth, users } = this.props;
 
     return (
       <Fragment>

@@ -62,7 +62,7 @@ router.get("/", (req, res) => {
 
   let currentPage = Number(req.query.page) || 1;
 
-  Post.estimatedDocumentCount({}, function(err, count) {
+  Post.estimatedDocumentCount({}, (err, count) => {
     const pageTotal = keys.paginateCount;
     let skipAmt = currentPage * pageTotal - pageTotal;
     const totalPages = Math.ceil(count / pageTotal);
@@ -123,7 +123,10 @@ router.get("/user/:id", (req, res) => {
 
   Post.find({ user: req.params.id })
     .populate("user", ["displayName", "avatar"])
-    .then(posts => res.json({ items: posts }))
+    .then(posts => {
+      console.log(posts.length);
+      res.json({ items: posts });
+    })
     .catch(err => {
       error.message = "Error Retrieving Posts";
       res.status(404).json(error);
@@ -134,6 +137,7 @@ router.get("/user/:id", (req, res) => {
 // @desc    Get posts by tag
 // @access  Public
 router.get("/tag/:tag", (req, res) => {
+  console.log(req.params.tag);
   let error = { success: false };
   Post.find({
     tags: {
@@ -141,7 +145,10 @@ router.get("/tag/:tag", (req, res) => {
     }
   })
     .populate("user", ["displayName", "avatar"])
-    .then(posts => res.json({ items: posts }))
+    .then(posts => {
+      console.log(posts);
+      res.json({ items: posts });
+    })
     .catch(err => {
       error.message = "Error Retrieving Posts";
       res.status(404).json(error);
@@ -151,7 +158,8 @@ router.get("/tag/:tag", (req, res) => {
 // @route   GET api/v1/posts/:id
 // @desc    Get post by dates and tags
 // @access  Public
-
+//alt ?
+// router.get("/details/query/:start/:end/:tags", (req, res) => {
 router.get("/details/query", (req, res) => {
   const { start, end, tags } = req.query;
   let error = { success: false };
