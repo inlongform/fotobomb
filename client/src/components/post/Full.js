@@ -65,89 +65,91 @@ class Full extends Component {
               <Col lg={cols} className="center-block">
                 {!loading && post.user ? (
                   <Card>
-                    <CardHeader>
-                      <div className="user-info">
-                        <ul>
-                          <li>
-                            <img
-                              src={post.user.avatar}
-                              alt="avatar"
-                              className="rounded-circle"
-                            />
-                          </li>
-                          <li>
-                            <h6 className="heavy">{post.user.displayName}</h6>
-                          </li>
-                        </ul>
-                        <ul className="dtime">
-                          <li>
-                            <FontAwesomeIcon icon="calendar-alt" />
-                          </li>
-                          <li>
-                            <h6>{moment(post.date).format("LLL")}</h6>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="social">
-                        <ul>
-                          <li>
-                            <TwitterShareButton
-                              title={post.caption}
-                              via={SHARE_VIA}
-                              url={this.getShareUrl()}
-                              hashtag={post.tags}
-                            >
-                              <FontAwesomeIcon icon={["fab", "twitter"]} />
-                            </TwitterShareButton>
-                          </li>
-                          <li>
-                            <FacebookShareButton
-                              url={this.getShareUrl()}
-                              quote={post.caption}
-                              hashtag="#fotobomb"
-                            >
-                              <FontAwesomeIcon icon={["fab", "facebook"]} />
-                            </FacebookShareButton>
-                          </li>
-                          <li>
-                            <EmailShareButton
-                              url={this.getShareUrl()}
-                              subject={this.getEmailSubject()}
-                              body={`check out this link ${this.getShareUrl()}`}
-                            >
-                              <FontAwesomeIcon icon="envelope" />
-                            </EmailShareButton>
-                          </li>
-                        </ul>
-                      </div>
-                    </CardHeader>
-                    <CardBody className="pt-0">
-                      <img
-                        src={`/images/posts/full/${post.image_id}`}
-                        alt={post.image_id}
-                      />
-                    </CardBody>
-                    <CardFooter>
-                      <div className="tags mb-3">
-                        <FontAwesomeIcon icon="tags" />
-                        <ul>
-                          {post.tags &&
-                            post.tags.map(tag => {
-                              return (
-                                <li key={tag}>
-                                  <Link
-                                    to={`/posts/tag/${tag}`}
-                                    className="mr-2"
-                                  >
-                                    #{tag}
-                                  </Link>
-                                </li>
-                              );
-                            })}
-                        </ul>
-                      </div>
-                      <p>{post.caption}</p>
-                    </CardFooter>
+                    <div>
+                      <CardHeader>
+                        <div className="user-info">
+                          <ul>
+                            <li>
+                              <img
+                                src={post.user.avatar}
+                                alt="avatar"
+                                className="rounded-circle"
+                              />
+                            </li>
+                            <li>
+                              <h6 className="heavy">{post.user.displayName}</h6>
+                            </li>
+                          </ul>
+                          <ul className="dtime">
+                            <li>
+                              <FontAwesomeIcon icon="calendar-alt" />
+                            </li>
+                            <li>
+                              <h6>{moment(post.date).format("LLL")}</h6>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="social">
+                          <ul>
+                            <li>
+                              <TwitterShareButton
+                                title={post.caption}
+                                via={SHARE_VIA}
+                                url={this.getShareUrl()}
+                                hashtag={post.tags}
+                              >
+                                <FontAwesomeIcon icon={["fab", "twitter"]} />
+                              </TwitterShareButton>
+                            </li>
+                            <li>
+                              <FacebookShareButton
+                                url={this.getShareUrl()}
+                                quote={post.caption}
+                                hashtag="#fotobomb"
+                              >
+                                <FontAwesomeIcon icon={["fab", "facebook"]} />
+                              </FacebookShareButton>
+                            </li>
+                            <li>
+                              <EmailShareButton
+                                url={this.getShareUrl()}
+                                subject={this.getEmailSubject()}
+                                body={`check out this link ${this.getShareUrl()}`}
+                              >
+                                <FontAwesomeIcon icon="envelope" />
+                              </EmailShareButton>
+                            </li>
+                          </ul>
+                        </div>
+                      </CardHeader>
+                      <CardBody className="pt-0">
+                        <img
+                          src={`/images/posts/full/${post.image_id}`}
+                          alt={post.image_id}
+                        />
+                      </CardBody>
+                      <CardFooter>
+                        <div className="tags mb-3">
+                          <FontAwesomeIcon icon="tags" />
+                          <ul>
+                            {post.tags &&
+                              post.tags.map(tag => {
+                                return (
+                                  <li key={tag}>
+                                    <Link
+                                      to={`/posts/tag/${tag}`}
+                                      className="mr-2"
+                                    >
+                                      #{tag}
+                                    </Link>
+                                  </li>
+                                );
+                              })}
+                          </ul>
+                        </div>
+                        <p>{post.caption}</p>
+                      </CardFooter>
+                    </div>
                   </Card>
                 ) : null}
               </Col>

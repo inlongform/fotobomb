@@ -15,8 +15,9 @@ const ImgItem = props => {
   const { tags, user, _id } = props.data;
 
   return (
-    <Col xl="3" lg="3" md="6" className="p-2">
-      <Card>
+    // <Col xl="3" lg="3" md="6" className="p-2 grid-item">
+    <Card className="grid-item">
+      <div>
         <Link to={`/post/${_id}`}>
           <CardImg
             top
@@ -57,8 +58,9 @@ const ImgItem = props => {
               })}
           </ul>
         </CardFooter>
-      </Card>
-    </Col>
+      </div>
+    </Card>
+    // </Col>
   );
 };
 

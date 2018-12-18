@@ -1,10 +1,12 @@
 .card {
-  @include shadow;
+  > div {
+    @include shadow;
+  }
   a > img {
     padding: 10px;
   }
   .card-body {
-    // display: flex;
+    display: flex;
     .card-title {
       color: $c-blue;
       font-weight: 600;

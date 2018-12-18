@@ -11,3 +11,4 @@ export const LOG_OUT = "LOG_OUT";
 export const UPDATE_USER = "UPDATE_USER";
 export const SHOW_UPLOAD_PANEL = "SHOW_UPLOAD_PANEL";
 export const UPLOADING = "UPLOADING";
+export const LOADING_COMPLETE = "LOADING_COMPLETE";

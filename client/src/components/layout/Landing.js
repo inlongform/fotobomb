@@ -3,13 +3,9 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Container, Row } from "reactstrap";
 import { getPosts } from "../../actions/postActions";
-import Masonry from "react-masonry-component";
+
 import ImgItem from "../results/ImgItem";
 import Spinner from "../common/Spinner";
-
-const masonryOptions = {
-  transitionDuration: 0
-};
 
 class Landing extends Component {
   constructor() {
@@ -79,9 +75,9 @@ class Landing extends Component {
     //   this.preloadImages(items);
     // }
 
-    const masonryOptions = {
-      percentPosition: true
-    };
+    // const masonryOptions = {
+    //   percentPosition: true
+    // };
 
     const nItems =
       items &&
@@ -94,25 +90,9 @@ class Landing extends Component {
           <Spinner />
         ) : (
           <Container id="main-content">
-            <Row className="grid-holder">
-              {items ? (
-                <Fragment>
-                  <Masonry
-                    className={"grid-holder"} // default ''
-                    elementType={"div"} // default 'div'
-                    options={{
-                      percentPosition: true,
-                      fitWidth: true,
-                      transitionDuration: "0.2s",
-                      itemSelector: ".col-xl-3"
-                    }} // default {}
-                    disableImagesLoaded={false} // default false
-                    // updateOnEachImageLoad={false} // default false and works only if disableImagesLoaded is false
-                    // imagesLoadedOptions={imagesLoadedOptions} // default {}
-                  >
-                    {nItems}
-                  </Masonry>
-                </Fragment>
+            <Row className="masonry">
+              {items && items.length > 0 ? (
+                <Fragment>{nItems}</Fragment>
               ) : (
                 <h3 className="center-block">There are no posts</h3>
               )}

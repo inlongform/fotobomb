@@ -63,21 +63,8 @@ class FileUpload extends Component {
         </FormGroup>
         <FormGroup className="mb-4">
           {this.state.file.name ? (
-            <div
-              style={{
-                // width: "300px",
-                marginTop: "10px"
-              }}
-            >
-              <img
-                id="output_image"
-                style={
-                  {
-                    // width: "100%"
-                  }
-                }
-                alt="preview"
-              />
+            <div className="mt-3">
+              <img id="output_image" alt="preview" />
             </div>
           ) : null}
         </FormGroup>

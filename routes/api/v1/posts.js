@@ -13,6 +13,8 @@ const queryBuilder = require(path.join(HOMEDIR, "utils", "queryBuilder"));
 const writeImage = require(path.join(HOMEDIR, "utils", "writeImage"));
 const keys = require(path.join(HOMEDIR, "config", "keys"));
 
+const getPageData = require(path.join(HOMEDIR, "utils", "middleware"));
+
 require(path.join(HOMEDIR, "config", "passport"));
 
 const imagePath = path.resolve(
@@ -24,6 +26,13 @@ const thumbPath = path.resolve(
   path.dirname(require.main.filename),
   "client/public/images/posts/thumb"
 );
+
+const {
+  ALL_POSTS,
+  POSTS_BY_USER,
+  POSTS_BY_TAG,
+  POSTS_BY_DETAILS
+} = require(path.join(HOMEDIR, "utils", "constants"));
 
 //list
 //
@@ -53,50 +62,6 @@ router.get("/redirect/:shortId", (req, res) => {
     });
 });
 
-// @route   GET api/v1/posts
-// @desc    Get posts
-// @access  Public
-router.get("/", (req, res) => {
-  let error = { success: false };
-  console.log(req.query);
-
-  let currentPage = Number(req.query.page) || 1;
-
-  Post.estimatedDocumentCount({}, (err, count) => {
-    const pageTotal = keys.paginateCount;
-    let skipAmt = currentPage * pageTotal - pageTotal;
-    const totalPages = Math.ceil(count / pageTotal);
-
-    //return the 1st page if query page > total pages
-    if (currentPage > totalPages) {
-      currentPage = 1;
-      skipAmt = 0;
-      let error = {
-        success: false,
-        pageTotal,
-        count,
-        message: "All Docs returned"
-      };
-      return res.status(404).json(error);
-    }
-    // console.log("count", count, "totalPages", totalPages);
-    // console.log("currentPage:", currentPage, "skipAmt", skipAmt);
-
-    Post.find()
-      .limit(pageTotal)
-      .sort({ date: -1 })
-      .skip(skipAmt)
-      .populate("user", ["displayName", "avatar"])
-      .then(posts => {
-        res.json({ count, totalPages, currentPage, items: posts });
-      })
-      .catch(err => {
-        error.message = "Error Retrieving Posts";
-        res.status(404).json(error);
-      });
-  });
-});
-
 // @route   GET api/v1/posts/:id
 // @desc    Get post by id
 // @access  Public
@@ -115,17 +80,55 @@ router.get("/:id", (req, res) => {
     });
 });
 
+// @route   GET api/v1/posts
+// @desc    Get posts
+// @access  Public
+
+router.get("/", getPageData(ALL_POSTS), (req, res) => {
+  let error = { success: false };
+  const {
+    currentPage,
+    paginateCount,
+    count,
+    skipAmt,
+    totalPages
+  } = req.pageData;
+
+  Post.find()
+    .limit(paginateCount)
+    .sort({ date: -1 })
+    .skip(skipAmt)
+    .populate("user", ["displayName", "avatar"])
+    .then(posts => {
+      res.json({ count, totalPages, currentPage, paginateCount, items: posts });
+    })
+    .catch(err => {
+      error.message = "Error Retrieving Posts";
+      res.status(404).json(error);
+    });
+});
+
 // @route   GET api/v1/posts/user/:id
 // @desc    Get posts by user id
 // @access  Public
-router.get("/user/:id", (req, res) => {
+router.get("/user/:id", getPageData(POSTS_BY_USER), (req, res) => {
   let error = { success: false };
 
+  const {
+    currentPage,
+    paginateCount,
+    count,
+    skipAmt,
+    totalPages
+  } = req.pageData;
+
   Post.find({ user: req.params.id })
+    .limit(paginateCount)
+    .sort({ date: -1 })
+    .skip(skipAmt)
     .populate("user", ["displayName", "avatar"])
     .then(posts => {
-      console.log(posts.length);
-      res.json({ items: posts });
+      res.json({ count, totalPages, currentPage, paginateCount, items: posts });
     })
     .catch(err => {
       error.message = "Error Retrieving Posts";
@@ -136,18 +139,29 @@ router.get("/user/:id", (req, res) => {
 // @route   GET api/v1/posts/tag/:tag
 // @desc    Get posts by tag
 // @access  Public
-router.get("/tag/:tag", (req, res) => {
+router.get("/tag/:tag", getPageData(POSTS_BY_TAG), (req, res) => {
   console.log(req.params.tag);
   let error = { success: false };
+
+  const {
+    currentPage,
+    paginateCount,
+    count,
+    skipAmt,
+    totalPages
+  } = req.pageData;
+
   Post.find({
     tags: {
       $all: req.params.tag
     }
   })
+    .limit(paginateCount)
+    .sort({ date: -1 })
+    .skip(skipAmt)
     .populate("user", ["displayName", "avatar"])
     .then(posts => {
-      console.log(posts);
-      res.json({ items: posts });
+      res.json({ count, totalPages, currentPage, paginateCount, items: posts });
     })
     .catch(err => {
       error.message = "Error Retrieving Posts";
@@ -160,14 +174,26 @@ router.get("/tag/:tag", (req, res) => {
 // @access  Public
 //alt ?
 // router.get("/details/query/:start/:end/:tags", (req, res) => {
-router.get("/details/query", (req, res) => {
+router.get("/details/query", getPageData(POSTS_BY_DETAILS), (req, res) => {
   const { start, end, tags } = req.query;
   let error = { success: false };
+
+  const {
+    currentPage,
+    paginateCount,
+    count,
+    skipAmt,
+    totalPages
+  } = req.pageData;
+
   console.log(start, end, tags);
   Post.find(queryBuilder(start, end, tags))
+    .limit(paginateCount)
+    .sort({ date: -1 })
+    .skip(skipAmt)
+    .populate("user", ["displayName", "avatar"])
     .then(posts => {
-      console.log(posts);
-      res.json({ items: posts });
+      res.json({ count, totalPages, currentPage, paginateCount, items: posts });
     })
     .catch(err => {
       error.message = "Error Retrieving Posts";

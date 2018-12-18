@@ -195,9 +195,7 @@ const mapStateToProps = state => ({
   post: state.post
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    { addPost, toggleUploadPanel }
-  )(AddPost)
-);
+export default connect(
+  mapStateToProps,
+  { addPost, toggleUploadPanel }
+)(withRouter(AddPost));

@@ -24,8 +24,26 @@ h6 {
   color: $c-error;
 }
 
+#output_image {
+  max-width: 325px;
+}
+
+.masonry {
+  // columns: 250px;
+  column-count: 4;
+  column-gap: 20px;
+  display: block;
+  .grid-item {
+    position: relative;
+    break-inside: avoid-column;
+    margin-bottom: 20px;
+    // display: inline-block;
+  }
+}
+
 .grid-holder {
   width: 100%;
+  max-width: 1140px;
 }
 
 .more-btn {

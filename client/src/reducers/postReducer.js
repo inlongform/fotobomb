@@ -4,7 +4,8 @@ import {
   POST_LOADING,
   DELETE_POST,
   GET_POST_BY_ID,
-  UPLOADING
+  UPLOADING,
+  LOADING_COMPLETE
 } from "../actions/types";
 
 const initialState = {
@@ -29,6 +30,14 @@ export default (state = initialState, action) => {
         loading: true
       };
     }
+
+    case LOADING_COMPLETE: {
+      console.log("loading complete");
+      return {
+        ...state,
+        loading: false
+      };
+    }
     case GET_POSTS: {
       let { items } = action.payload;
 
@@ -44,7 +53,7 @@ export default (state = initialState, action) => {
           count: action.payload.count,
           currentPage: action.payload.currentPage,
           totalPages: action.payload.totalPages,
-          items: items
+          items: action.payload.items
         },
 
         loading: false

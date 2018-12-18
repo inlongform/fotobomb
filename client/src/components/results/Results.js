@@ -9,10 +9,25 @@ import {
 import ImgItem from "./ImgItem";
 import { Container, Row } from "reactstrap";
 import Spinner from "../common/Spinner";
+import isEmpty from "../../utils/is-empty";
 
 class Results extends Component {
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
     this.getUrlParamData(this.props);
+  }
+
+  componentWillUpdate(nextProps) {
+    if (
+      nextProps.match.url !== this.props.match.url ||
+      nextProps.location.search !== this.props.location.search
+    ) {
+      this.getUrlParamData(nextProps);
+    }
+
+    console.log(nextProps);
   }
 
   getUrlParamData(params) {
@@ -20,28 +35,32 @@ class Results extends Component {
     const searchParams = params.location.search;
 
     if (matchParams.hasOwnProperty("tag")) {
-      this.props.getPostsByTag(matchParams.tag);
+      this.props.getPostsByTag(matchParams.tag, 1);
     } else if (matchParams.hasOwnProperty("id")) {
-      this.props.getPostsByUser(matchParams.id);
+      this.props.getPostsByUser(matchParams.id, 1);
     } else {
       if (searchParams) {
-        this.props.getPostsByDetails(searchParams);
+        this.props.getPostsByDetails(searchParams, 1);
       }
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.match.url !== this.props.match.url ||
-      nextProps.location.search !== this.props.location.search
-    ) {
-      this.getUrlParamData(nextProps);
+  nextPage(e) {
+    e.preventDefault();
+
+    const { currentPage, totalPages } = this.props.post.posts;
+    console.log(typeof currentPage, totalPages);
+
+    if (currentPage < totalPages) {
+      this.props.getPosts(currentPage + 1);
     }
   }
+
   render() {
     const { loading } = this.props.post;
+    const { errors } = this.props;
     const { items, count, currentPage, totalPages } = this.props.post.posts;
-    console.log(this.props);
+    console.log(errors);
 
     const nItems =
       items &&
@@ -55,20 +74,32 @@ class Results extends Component {
           <Spinner />
         ) : (
           <Container id="main-content">
-            <Row>
+            <Row className={isEmpty(errors) ? "masonry" : ""}>
               {items && items.length > 0 ? (
-                <Fragment>
-                  {nItems}
-                  {/* {currentPage >= totalPages ? null : (
-                    <button onClick={this.nextPage.bind(this)}>
-                      Load more
-                    </button>
-                  )} */}
-                </Fragment>
+                <Fragment>{nItems}</Fragment>
               ) : (
-                <h3 className="center-block">There are no posts</h3>
+                <Fragment>
+                  {errors ? (
+                    <h3 className="center-block">{errors.message}</h3>
+                  ) : (
+                    <h3 className="center-block">There are no posts</h3>
+                  )}
+                </Fragment>
               )}
             </Row>
+
+            {items && totalPages > 1 ? (
+              <Row>
+                {currentPage >= totalPages ? null : (
+                  <button
+                    onClick={this.nextPage.bind(this)}
+                    className="mt-4 mb-4 center-block more-btn"
+                  >
+                    Load more
+                  </button>
+                )}
+              </Row>
+            ) : null}
           </Container>
         )}
       </div>
@@ -80,11 +111,13 @@ Results.propTypes = {
   getPostsByUser: PropTypes.func.isRequired,
   getPostsByTag: PropTypes.func.isRequired,
   getPostsByDetails: PropTypes.func.isRequired,
-  post: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  post: state.post
+  post: state.post,
+  errors: state.errors
 });
 
 export default connect(

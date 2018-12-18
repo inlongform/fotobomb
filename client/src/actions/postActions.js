@@ -8,16 +8,15 @@ import {
   DELETE_POST,
   CLEAR_ERRORS,
   UPLOADING,
-  SHOW_UPLOAD_PANEL
+  SHOW_UPLOAD_PANEL,
+  LOADING_COMPLETE
 } from "./types";
 
 //add post
 export const addPost = (postData, history) => dispatch => {
-  // dispatch(clearErrors());
-
   console.log("postData", postData);
   dispatch(togglePostUpload(true));
-
+  dispatch(clearErrors());
   axios
     .post("/api/posts", postData)
     .then(res => {
@@ -53,10 +52,11 @@ export const togglePostUpload = bool => dispatch => {
 //get all posts
 export const getPosts = page => dispatch => {
   dispatch(setPostLoading());
-
+  dispatch(clearErrors());
   axios
     .get(`/api/posts/?page=${page}`)
     .then(res => {
+      console.log(res);
       dispatch({
         type: GET_POSTS,
         payload: res.data
@@ -65,18 +65,18 @@ export const getPosts = page => dispatch => {
     .catch(err => {
       console.log(err.response);
       dispatch({
-        type: GET_POSTS,
-        payload: []
+        type: GET_ERRORS,
+        payload: err.response.data
       });
     });
 };
 
 //get posts by details
-export const getPostsByDetails = query => dispatch => {
+export const getPostsByDetails = (query, page) => dispatch => {
   dispatch(setPostLoading());
-
+  dispatch(clearErrors());
   axios
-    .get(`/api/posts/details/query${query}`)
+    .get(`/api/posts/details/query${query}&page=${page}`)
     .then(res => {
       console.log("res", res);
       dispatch({
@@ -85,38 +85,43 @@ export const getPostsByDetails = query => dispatch => {
       });
     })
     .catch(err => {
-      console.log("err", err);
+      // console.log("err", { err });
+      dispatch(setLoadingComplete());
       dispatch({
-        type: GET_POSTS,
-        payload: null
+        type: GET_ERRORS,
+        payload: err.response.data
       });
     });
 };
 
 //get post by tag
-export const getPostsByTag = tag => dispatch => {
+export const getPostsByTag = (tag, page) => dispatch => {
   dispatch(setPostLoading());
+  dispatch(clearErrors());
   console.log("getPostsByTag", tag);
   axios
-    .get(`/api/posts/tag/${tag}`)
+    .get(`/api/posts/tag/${tag}?page=${page}`)
     .then(res => {
-      console.log(res.data);
+      console.log("ther are no errors");
       dispatch({
         type: GET_POSTS,
         payload: res.data
       });
     })
-    .catch(err =>
+    .catch(err => {
+      console.log("there are the errors");
+      dispatch(setLoadingComplete());
       dispatch({
-        type: GET_POSTS,
-        payload: null
-      })
-    );
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
 };
 
 //SINGLE POST
 export const getPostById = id => dispatch => {
   dispatch(setPostLoading());
+  dispatch(clearErrors());
   console.log("get post by id id", id);
   axios
     .get(`/api/posts/${id}`)
@@ -134,11 +139,12 @@ export const getPostById = id => dispatch => {
     );
 };
 
-export const getPostsByUser = id => dispatch => {
+export const getPostsByUser = (id, page) => dispatch => {
   dispatch(setPostLoading());
+  dispatch(clearErrors());
   console.log("getPostsByUser", id);
   axios
-    .get(`/api/posts/user/${id}`)
+    .get(`/api/posts/user/${id}?page=${page}`)
     .then(res => {
       dispatch({
         type: GET_POSTS,
@@ -147,10 +153,17 @@ export const getPostsByUser = id => dispatch => {
     })
     .catch(err =>
       dispatch({
-        type: GET_POSTS,
-        payload: null
+        type: GET_ERRORS,
+        payload: err.response.data
       })
     );
+};
+
+export const setLoadingComplete = () => {
+  console.log("loading complete");
+  return {
+    type: LOADING_COMPLETE
+  };
 };
 
 export const setPostLoading = () => {
