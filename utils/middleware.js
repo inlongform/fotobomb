@@ -29,7 +29,7 @@ const getPageData = query => {
   return (req, res, next) => {
     console.log("page", req.query.page);
     let currentPage = Number(req.query.page) || 1;
-    Post.count(getQuery(req, query), (err, count) => {
+    Post.countDocuments(getQuery(req, query), (err, count) => {
       const paginateCount = keys.paginateCount;
       let skipAmt = currentPage * paginateCount - paginateCount;
       const totalPages = Math.ceil(count / paginateCount);

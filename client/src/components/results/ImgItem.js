@@ -29,7 +29,7 @@ const ImgItem = props => {
         <CardBody className="p-2">
           <div>
             <img
-              src="/images/avatar.jpg"
+              src={user.avatar}
               alt="avatar"
               className="rounded-circle user-icon"
             />

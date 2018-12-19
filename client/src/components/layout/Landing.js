@@ -18,6 +18,7 @@ class Landing extends Component {
   componentDidMount() {
     this.props.getPosts(1);
     console.log(this.props);
+
     // this.preloadImages(items);
   }
 
@@ -65,19 +66,6 @@ class Landing extends Component {
   render() {
     const { loading } = this.props.post;
     const { items, count, currentPage, totalPages } = this.props.post.posts;
-
-    // if (!loading) {
-    //   this.preloadImages(items);
-    // }
-    // this.preloadImages(items);
-
-    // if (!this.state.loaded) {
-    //   this.preloadImages(items);
-    // }
-
-    // const masonryOptions = {
-    //   percentPosition: true
-    // };
 
     const nItems =
       items &&

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "share group photos with strangers",
   "main": "server.js",
+  "private": true,
   "scripts": {
     "client-install": "npm install --prefix client",
     "start": "node server.js",
